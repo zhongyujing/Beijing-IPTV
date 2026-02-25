@@ -49,7 +49,7 @@ def main():
             new_lines.append(line)
 
         # 写入结果文件
-        with open("beijing.m3u", "w", encoding="utf-8") as f:
+        with open("Beijing-IPTV.m3u", "w", encoding="utf-8") as f:
             f.write('\n'.join(new_lines))
         
         print(f"处理成功：已剔除无用频道，并转换地址为 {target_prefix}")
