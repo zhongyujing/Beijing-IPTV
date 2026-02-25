@@ -1,13 +1,16 @@
-name: Auto Update IPTV
+name: Auto Update IPTV Release
 
 on:
   schedule:
-    - cron: "0 22 * * 6"
-  workflow_dispatch:
+    - cron: "0 22 * * 6" # 每周日北京时间 06:00
+  workflow_dispatch:      # 支持手动触发
 
 jobs:
-  update:
+  update-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write    # 必须开启写权限
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,10 +26,16 @@ jobs:
       - name: Run script
         run: python convert.py
 
-      - name: Commit and Push
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Action"
-          git add Beijing-IPTV.m3u
-          git commit -m "Weekly auto update Beijing-IPTV.m3u" || exit 0
-          git push
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: iptv         # 固定标签名，确保链接不变
+          name: Latest Beijing IPTV List
+          files: Beijing-IPTV.m3u
+          body: |
+            北京联通 IPTV 自动更新列表
+            最后更新时间: ${{ github.event.head_commit.timestamp || '手动更新' }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
