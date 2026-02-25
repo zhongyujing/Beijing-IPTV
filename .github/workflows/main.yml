@@ -27,6 +27,6 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Action"
-          git add beijing.m3u
-          git commit -m "Auto update beijing.m3u" || exit 0
+          git add Beijing-IPTV.m3u
+          git commit -m "Auto update Beijing-IPTV.m3u" || exit 0
           git push
