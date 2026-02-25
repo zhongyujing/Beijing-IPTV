@@ -1,9 +1,9 @@
 import requests
 
 # 1. 原始链接
-source_url = "https://github.com"
+source_url = "https://github.com/qwerttvv/Beijing-IPTV/releases/download/iptv/IPTV-Unicom-Multicast.m3u"
 # 2. 播放地址前缀（按需修改，如果不改就保持 "rtp://"）
-target_prefix = "rtp://" 
+target_prefix = "http://192.168.1.1:8686/rtp/" 
 
 def main():
     try:
