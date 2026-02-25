@@ -1,9 +1,9 @@
 import requests
 
 # 1. 原始链接
-source_url = "https://github.com/qwerttvv/Beijing-IPTV/releases/download/iptv/IPTV-Unicom-Multicast.m3u"
-# 2. 你的内网 udpxy 地址前缀
-target_prefix = "http://192.168.1.1:8686/rtp/" 
+source_url = "https://github.com"
+# 2. 播放地址前缀（按需修改，如果不改就保持 "rtp://"）
+target_prefix = "rtp://" 
 
 def main():
     try:
@@ -18,45 +18,47 @@ def main():
 
         for line in lines:
             line = line.strip()
-            # 跳过空行
             if not line:
                 continue
 
-            # 如果上一行触发了删除标记（超清/HDR/8K），跳过当前的地址行
+            # 如果上一行是需要删除的频道（超清/HDR/8K），跳过这一行
             if skip_next:
                 skip_next = False
                 continue
 
-            # 逻辑 1：处理频道信息行
+            # 核心逻辑 1：处理频道信息行
             if line.startswith("#EXTINF") or line.startswith("# #EXTINF"):
-                # 关键词过滤：删除包含 超清、HDR、8K 的频道
+                # 关键词过滤：超清、HDR、8K
                 if any(word in line for word in ["超清", "HDR", "8K"]):
                     skip_next = True
                     continue
                 
-                # 格式修正：将 "# #EXTINF" 统一改为标准 "#EXTINF"
+                # 修正格式：将 "# #EXTINF" 统一改为 "#EXTINF"
                 line = line.replace("# #EXTINF", "#EXTINF")
             
-            # 逻辑 2：处理地址行（去掉多余 # 并转换前缀）
-            # 先去掉可能存在的开头多余 # 号（如 #rtp://）
+            # 核心逻辑 2：处理播放地址行
+            # 情况 A：如果地址以 #rtp:// 开头，先去掉开头的 #
             if line.startswith("#rtp://"):
-                line = line[1:]
+                line = line[1:]  # 去掉第一个字符 #
             
-            # 将 rtp:// 统一替换为你的 http://192.168.1.1:8686/rtp/
+            # 情况 B：统一修改前缀（将 rtp:// 换成你设置的 target_prefix）
             if line.startswith("rtp://"):
                 line = line.replace("rtp://", target_prefix)
 
             new_lines.append(line)
 
-        # 写入结果文件
+        # 写入文件
         with open("Beijing-IPTV.m3u", "w", encoding="utf-8") as f:
             f.write('\n'.join(new_lines))
         
-        print(f"处理成功：已剔除无用频道，并转换地址为 {target_prefix}")
+        print("处理成功：已删除【超清/HDR/8K】频道，修复了信息行格式，并去除了地址前的多余 # 号。")
 
     except Exception as e:
-        print(f"执行出错: {e}")
+        print(f"处理失败: {e}")
         exit(1)
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()
