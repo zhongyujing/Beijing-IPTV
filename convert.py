@@ -38,7 +38,7 @@ def main():
             
             # 核心逻辑 2：处理播放地址行
             # 情况 A：如果地址以 #rtp:// 开头，先去掉开头的 #
-            if line.startswith("#rtp://"):
+            if line.startswith("# rtp://"):
                 line = line[1:]  # 去掉第一个字符 #
             
             # 情况 B：统一修改前缀（将 rtp:// 换成你设置的 target_prefix）
