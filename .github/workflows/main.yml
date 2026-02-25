@@ -30,7 +30,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: iptv         # 固定标签名，确保链接不变
-          name: Latest Beijing IPTV List
+          name: Beijing-IPTV
           files: Beijing-IPTV.m3u
           body: |
             北京联通 IPTV 自动更新列表
