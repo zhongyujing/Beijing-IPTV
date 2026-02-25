@@ -2,7 +2,7 @@ name: Auto Update IPTV
 
 on:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: "0 22 * * 6"
   workflow_dispatch:
 
 jobs:
@@ -28,5 +28,5 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Action"
           git add Beijing-IPTV.m3u
-          git commit -m "Auto update Beijing-IPTV.m3u" || exit 0
+          git commit -m "Weekly auto update Beijing-IPTV.m3u" || exit 0
           git push
