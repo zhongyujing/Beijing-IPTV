@@ -36,14 +36,16 @@ def main():
                 # 修正格式：将 "# #EXTINF" 统一改为 "#EXTINF"
                 line = line.replace("# #EXTINF", "#EXTINF")
             
-            # 核心逻辑 2：处理播放地址行
-            # 情况 A：如果地址以 #rtp:// 开头，先去掉开头的 #
-            if line.startswith("# rtp://"):
-                line = line[1:]  # 去掉第一个字符 #
-            
-            # 情况 B：统一修改前缀（将 rtp:// 换成你设置的 target_prefix）
-            if line.startswith("rtp://"):
-                line = line.replace("rtp://", target_prefix)
+            # 核心逻辑 2：处理播放地址行（深度修复：去除开头的 # 和 空格）
+            # 如果这一行包含 rtp:// 且不是以标准 #EXT 开头的描述行
+            if "rtp://" in line and not line.startswith("#EXT"):
+                # 先把开头的 # 和 空格通通删掉，还原成标准的 rtp://...
+                if line.startswith("#"):
+                    line = line.lstrip("#").strip()
+                
+                # 统一修改前缀为你的 udpxy 地址
+                if line.startswith("rtp://"):
+                    line = line.replace("rtp://", target_prefix)
 
             new_lines.append(line)
 
