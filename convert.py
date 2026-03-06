@@ -2,7 +2,7 @@ import requests
 import os
 
 # 1. 原始链接
-source_url = "https://github.com/qwerttvv/Beijing-IPTV/releases/download/iptv/IPTV-Unicom-Multicast.m3u"
+source_url = "https://raw.githubusercontent.com/zzzz0317/beijing-unicom-iptv-playlist/refs/heads/main/iptv-multicast.m3u"
 # 2. 你的内网 udpxy 地址前缀
 target_prefix = "http://192.168.1.1:8686/rtp/" 
 
